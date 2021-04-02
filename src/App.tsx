@@ -2,10 +2,14 @@ import { useAppSelector, useAppDispatch } from './redux/hooks';
 import { useEffect } from 'react';
 import { thunkFetchVideos } from './redux/actions/videos';
 import Loading from './components/Loading';
+import NotificationAlert from './components/NotificationAlert';
+import { TestComponentProps, Video } from './interfaces';
 
 const App = () => {
-  const videos = useAppSelector((state) => state.videos.list);
+  const videos: Video[] = useAppSelector((state) => state.videos.list);
   const status = useAppSelector((state) => state.videos.status);
+  const error = useAppSelector((state) => state.videos.error);
+  const message = useAppSelector((state) => state.videos.message);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -14,23 +18,21 @@ const App = () => {
 
   return (
     <div className="App">
+      {message && <NotificationAlert error={error} message={message} />}
+
       {status === 'loading' ? (
         <Loading />
       ) : (
-        videos.map((item: number) => <Test item={item} />)
+        videos.map((video: Video) => <Test video={video} />)
       )}
     </div>
   );
 };
 
-interface TestComponentProps {
-  item: number;
-}
-
-const Test = ({ item }: TestComponentProps) => {
+const Test = ({ video }: TestComponentProps) => {
   return (
     <div className="test">
-      Test Bootstrap {item}
+      {video.name}
       <h1>Primary</h1>
       <h3>Tertiary</h3>
     </div>

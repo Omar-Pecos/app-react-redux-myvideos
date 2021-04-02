@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import { AnyAction } from '@reduxjs/toolkit';
 import {
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
@@ -7,13 +7,15 @@ import {
 
 interface VideosState {
   status: string;
-  error: string;
+  error: boolean;
+  message: string;
   list: number[];
 }
 
 const initialState: VideosState = {
   status: 'init',
-  error: '',
+  error: false,
+  message: '',
   list: [],
 };
 
@@ -27,17 +29,18 @@ export default function videosReducer(state = initialState, action: AnyAction) {
     case FETCH_VIDEOS_SUCCESS:
       return {
         ...state,
-        status: 'loaded',
-        list: action.videos,
+        status: 'success',
+        message: 'Videos loaded succesfully!',
+        list: action.payload,
       };
     case FETCH_VIDEOS_FAIL:
       return {
         ...state,
         status: 'error',
-        error: action.error,
+        error: true,
+        message: action.payload,
       };
     default:
-      console.log(state);
       return {
         ...state,
       };

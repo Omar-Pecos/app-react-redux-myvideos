@@ -1,47 +1,36 @@
-import { AnyAction } from 'redux';
-import { RootState } from '../store';
-import { ThunkAction } from 'redux-thunk';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { apiUrl } from '../../config';
+import { AppThunk } from '../store';
 import {
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
 } from './actionTypes';
+import axios from 'axios';
+import { Video } from '../../interfaces';
 
-const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-const fetchVideos = (): AnyAction => ({
+const fetchVideos = () => ({
   type: FETCH_VIDEOS,
 });
 
-const fetchVideosSuccess = (videos: number[]): AnyAction => ({
+const fetchVideosSuccess = (payload: Video[]): PayloadAction<Video[]> => ({
   type: FETCH_VIDEOS_SUCCESS,
-  videos,
+  payload,
 });
 
-const fetchVideosFail = (error: string): AnyAction => ({
+const fetchVideosFail = (payload: string): PayloadAction<string> => ({
   type: FETCH_VIDEOS_FAIL,
-  error: error || 'some error m8!',
+  payload,
 });
 
-export const thunkFetchVideos = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  AnyAction
-> => async (dispatch) => {
+export const thunkFetchVideos = (): AppThunk => async (dispatch) => {
   dispatch(fetchVideos());
-
   try {
-    console.time('asyncFake');
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('done async fake');
-        console.timeEnd('asyncFake');
-        resolve(true);
-      }, 5000);
-    });
-    dispatch(fetchVideosSuccess(list));
-  } catch (error) {
-    dispatch(fetchVideosFail(error.message));
+    const {
+      data: { data },
+    } = await axios.get(`${apiUrl}/apm`);
+    dispatch(fetchVideosSuccess(data));
+  } catch (err) {
+    dispatch(fetchVideosFail(err?.response?.data?.error || err.message));
   }
 };
