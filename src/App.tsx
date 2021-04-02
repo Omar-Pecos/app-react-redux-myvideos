@@ -1,10 +1,11 @@
 import { useAppSelector, useAppDispatch } from './redux/hooks';
 import { useEffect } from 'react';
-import { thunkFetchVideos } from './redux/actions/videos';
 import Loading from './components/Loading';
+import { selectVideosList, thunkFetchVideos } from './redux/videosSlice';
 
 const App = () => {
-  const videos = useAppSelector((state) => state.videos.list);
+  //const videos = useAppSelector((state) => state.videos.list);
+  const videos = useAppSelector(selectVideosList);
   const status = useAppSelector((state) => state.videos.status);
   const dispatch = useAppDispatch();
 
