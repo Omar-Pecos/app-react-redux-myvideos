@@ -1,11 +1,24 @@
-const arr = [1, 2, 3];
+import { useAppSelector, useAppDispatch } from './redux/hooks';
+import { useEffect } from 'react';
+import { thunkFetchVideos } from './redux/actions/videos';
+import Loading from './components/Loading';
 
 const App = () => {
+  const videos = useAppSelector((state) => state.videos.list);
+  const status = useAppSelector((state) => state.videos.status);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(thunkFetchVideos());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      {arr.map((item) => (
-        <Test item={item} />
-      ))}
+      {status === 'loading' ? (
+        <Loading />
+      ) : (
+        videos.map((item: number) => <Test item={item} />)
+      )}
     </div>
   );
 };
