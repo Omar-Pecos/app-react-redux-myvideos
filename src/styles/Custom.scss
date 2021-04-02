@@ -1,0 +1,20 @@
+// Override default variables before the import
+$primary: #3587a4;
+$secondary: #c1dff0;
+$tertiary: #88ccf1;
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
+.App {
+  .test {
+    background-color: $secondary;
+
+    h1 {
+      color: $primary;
+    }
+    h3 {
+      color: $tertiary;
+    }
+  }
+}
