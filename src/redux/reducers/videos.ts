@@ -3,6 +3,7 @@ import {
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
+  RESET_MESSAGE_AND_ERROR,
 } from '../actions/actionTypes';
 
 interface VideosState {
@@ -39,6 +40,12 @@ export default function videosReducer(state = initialState, action: AnyAction) {
         status: 'error',
         error: true,
         message: action.payload,
+      };
+    case RESET_MESSAGE_AND_ERROR:
+      return {
+        ...state,
+        error: false,
+        message: '',
       };
     default:
       return {
