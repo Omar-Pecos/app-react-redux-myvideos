@@ -1,5 +1,8 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import {
+  ADD_VIDEO,
+  ADD_VIDEO_FAIL,
+  ADD_VIDEO_SUCCESS,
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
@@ -46,6 +49,25 @@ export default function videosReducer(state = initialState, action: AnyAction) {
         ...state,
         error: false,
         message: '',
+      };
+    case ADD_VIDEO:
+      return {
+        ...state,
+        status: 'loading',
+      };
+    case ADD_VIDEO_SUCCESS:
+      return {
+        ...state,
+        status: 'success',
+        message: 'Added new video successfully!',
+        list: [...state.list, action.payload],
+      };
+    case ADD_VIDEO_FAIL:
+      return {
+        ...state,
+        status: 'error',
+        error: true,
+        message: action.payload,
       };
     default:
       return {

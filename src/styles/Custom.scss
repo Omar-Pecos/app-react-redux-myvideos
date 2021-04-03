@@ -100,12 +100,11 @@ $tertiary: #5d91ad;
 //VideoTile
 #video-tile {
   .operations-bar {
-    height: 5vw;
+    height: 5vh;
 
     & > img {
       margin: 10px;
-      width: 50px;
-      height: 50px;
+      height: 100%;
     }
   }
 }

@@ -16,3 +16,14 @@ export interface NotificationProps {
   error: boolean;
   message: string;
 }
+
+export interface ValidationMessageProps {
+  message: string;
+}
+
+export interface IFormInputs {
+  name: string;
+  command: string;
+  description: string;
+  url: string;
+}
