@@ -1,41 +1,37 @@
-import { useAppSelector, useAppDispatch } from './redux/hooks';
-import { useEffect } from 'react';
-import { thunkFetchVideos } from './redux/actions/videos';
-import Loading from './components/Loading';
-import NotificationAlert from './components/NotificationAlert';
-import { TestComponentProps, Video } from './interfaces';
+// is necessary the React import?
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import Player from './pages/Player';
 
 const App = () => {
-  const videos: Video[] = useAppSelector((state) => state.videos.list);
-  const status = useAppSelector((state) => state.videos.status);
-  const error = useAppSelector((state) => state.videos.error);
-  const message = useAppSelector((state) => state.videos.message);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(thunkFetchVideos());
-  }, [dispatch]);
-
   return (
-    <div className="App">
-      {message && <NotificationAlert error={error} message={message} />}
+    <Router>
+      <div className="App">
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/player/vfxhcjyet85">Player</Link>
+          </li>
+        </ul>
 
-      {status === 'loading' ? (
-        <Loading />
-      ) : (
-        videos.map((video: Video) => <Test video={video} />)
-      )}
-    </div>
-  );
-};
+        <hr />
 
-const Test = ({ video }: TestComponentProps) => {
-  return (
-    <div className="test">
-      {video.name}
-      <h1>Primary</h1>
-      <h3>Tertiary</h3>
-    </div>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/player/:id">
+            <Player />
+          </Route>
+          <Route path="*">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
