@@ -8,7 +8,7 @@ export interface Video {
   updatedAt: string;
 }
 
-export interface TestComponentProps {
+export interface VideoTileProps {
   video: Video;
 }
 

@@ -1,15 +1,27 @@
 // Override default variables before the import
 $primary: #3587a4;
 $secondary: #c1dff0;
-$tertiary: #88ccf1;
+$tertiary: #5d91ad;
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
-//App
+//App - Home
 .App {
   width: 100vw;
   height: 100vh;
+
+  .content-principal {
+    max-height: 450px;
+    background-color: $secondary;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   .test {
     background-color: $secondary;
 
@@ -18,6 +30,14 @@ $tertiary: #88ccf1;
     }
     h3 {
       color: $tertiary;
+    }
+  }
+
+  .btn {
+    background-color: $tertiary;
+    border: 1px solid $primary;
+    &:hover {
+      background-color: $primary;
     }
   }
 }
@@ -39,8 +59,8 @@ $tertiary: #88ccf1;
 
   .loading {
     background-color: $primary;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     border-radius: 90%;
     position: relative;
     animation-name: example;
@@ -66,8 +86,26 @@ $tertiary: #88ccf1;
   }
 }
 
+//Navbar
+.navbar {
+  background-color: $primary !important;
+}
 //Footer
 #footer {
+  background-color: $primary !important;
   flex-direction: column;
   align-items: center;
+}
+
+//VideoTile
+#video-tile {
+  .operations-bar {
+    height: 5vw;
+
+    & > img {
+      margin: 10px;
+      width: 50px;
+      height: 50px;
+    }
+  }
 }

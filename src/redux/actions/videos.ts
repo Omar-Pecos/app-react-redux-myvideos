@@ -35,11 +35,11 @@ export const thunkFetchVideos = (): AppThunk => async (dispatch) => {
       data: { data },
     } = await axios.get(`${apiUrl}/apm`);
     dispatch(fetchVideosSuccess(data));
-
-    dispatch(thunkResetMessageAndError());
   } catch (err) {
     dispatch(fetchVideosFail(err?.response?.data?.error || err.message));
   }
+
+  dispatch(thunkResetMessageAndError());
 };
 
 const thunkResetMessageAndError = (): AppThunk => (dispatch) => {
