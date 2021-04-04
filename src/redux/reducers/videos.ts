@@ -1,8 +1,12 @@
 import { AnyAction } from '@reduxjs/toolkit';
+import { Video } from '../../interfaces';
 import {
   ADD_VIDEO,
   ADD_VIDEO_FAIL,
   ADD_VIDEO_SUCCESS,
+  EDIT_VIDEO,
+  EDIT_VIDEO_FAIL,
+  EDIT_VIDEO_SUCCESS,
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
@@ -13,7 +17,7 @@ interface VideosState {
   status: string;
   error: boolean;
   message: string;
-  list: number[];
+  list: Video[];
 }
 
 const initialState: VideosState = {
@@ -63,6 +67,30 @@ export default function videosReducer(state = initialState, action: AnyAction) {
         list: [...state.list, action.payload],
       };
     case ADD_VIDEO_FAIL:
+      return {
+        ...state,
+        status: 'error',
+        error: true,
+        message: action.payload,
+      };
+    case EDIT_VIDEO:
+      return {
+        ...state,
+        status: 'loading',
+      };
+    case EDIT_VIDEO_SUCCESS:
+      return {
+        ...state,
+        status: 'success',
+        message: 'Edited video successfully!',
+        list: state.list.map((video) => {
+          if (video.id === action.payload.id) {
+            video = action.payload;
+          }
+          return video;
+        }),
+      };
+    case EDIT_VIDEO_FAIL:
       return {
         ...state,
         status: 'error',

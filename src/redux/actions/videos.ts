@@ -5,6 +5,9 @@ import {
   ADD_VIDEO,
   ADD_VIDEO_FAIL,
   ADD_VIDEO_SUCCESS,
+  EDIT_VIDEO,
+  EDIT_VIDEO_FAIL,
+  EDIT_VIDEO_SUCCESS,
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
@@ -45,6 +48,20 @@ const addVideoFail = (payload: string) => ({
   payload,
 });
 
+const editVideo = () => ({
+  type: EDIT_VIDEO,
+});
+
+const editVideoSuccess = (payload: Video) => ({
+  type: EDIT_VIDEO_SUCCESS,
+  payload,
+});
+
+const editVideoFail = (payload: string) => ({
+  type: EDIT_VIDEO_FAIL,
+  payload,
+});
+
 export const thunkFetchVideos = (): AppThunk => async (dispatch) => {
   dispatch(fetchVideos());
   try {
@@ -77,6 +94,24 @@ export const thunkAddVideo = (body: IFormInputs): AppThunk => async (
     dispatch(addVideoSuccess(data));
   } catch (err) {
     dispatch(addVideoFail(err?.response?.data?.error || err.message));
+  }
+
+  dispatch(thunkResetMessageAndError());
+};
+
+export const thunkEditVideo = (
+  id: string,
+  body: IFormInputs
+): AppThunk => async (dispatch) => {
+  dispatch(editVideo());
+
+  try {
+    const {
+      data: { data },
+    } = await axios.put(`${apiUrl}/apm/${id}`, body);
+    dispatch(editVideoSuccess(data));
+  } catch (err) {
+    dispatch(editVideoFail(err?.response?.data?.error || err.message));
   }
 
   dispatch(thunkResetMessageAndError());

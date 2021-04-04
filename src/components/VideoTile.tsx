@@ -1,9 +1,17 @@
-import { VideoTileProps } from '../interfaces';
+import { Video, VideoTileProps } from '../interfaces';
 import playIcon from '../assets/icons/play.png';
 import editIcon from '../assets/icons/edit.png';
 import deleteIcon from '../assets/icons/delete.png';
 
-const VideoTile = ({ video }: VideoTileProps) => {
+const VideoTile = ({
+  video,
+  setIsEditing,
+  setEditingVideo,
+}: VideoTileProps) => {
+  const sendVideoToEdit = (video: Video) => {
+    setEditingVideo(video);
+    setIsEditing(true);
+  };
   return (
     <div id="video-tile" className="row">
       <div className="col-3 col-md-2 mt-2 mt-lg-4 mt-xl-5">
@@ -22,7 +30,12 @@ const VideoTile = ({ video }: VideoTileProps) => {
 
         <div className="d-flex flex-row justify-content-end operations-bar">
           {/* Edit icon - .image-fluid */}
-          <img src={editIcon} className="image-fluid" alt="Edit" />
+          <img
+            src={editIcon}
+            className="image-fluid"
+            alt="Edit"
+            onClick={() => sendVideoToEdit({ ...video })}
+          />
           {/* Delete icon - .image-fluid */}
           <img src={deleteIcon} className="image-fluid" alt="Delete" />
         </div>
