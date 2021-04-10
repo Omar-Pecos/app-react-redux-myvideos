@@ -1,10 +1,14 @@
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { useEffect, useState } from 'react';
-import { thunkFetchVideos } from '../redux/actions/videos';
+import { useEffect, useState, useRef } from 'react';
+import { thunkDeleteVideo, thunkFetchVideos } from '../redux/actions/videos';
 import Loading from '../components/Loading';
 import { Video, videoDefaultObj } from '../interfaces';
 import VideoTile from '../components/VideoTile';
 import VideoForm from '../components/VideoForm';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const Home = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -13,13 +17,31 @@ const Home = () => {
   const status = useAppSelector((state) => state.videos.status);
   const dispatch = useAppDispatch();
 
-  // WIP - performs two dispatches at init
-  // one on init - lenght = 0
-  // then length = videos.length
-  // another when videos.lenght changes
+  const numOfLoads = useRef(0);
   useEffect(() => {
-    dispatch(thunkFetchVideos());
+    if (numOfLoads.current !== 1) {
+      dispatch(thunkFetchVideos());
+    }
+    numOfLoads.current += 1;
   }, [dispatch, videos.length]);
+
+  const showSwalDeleteConfirmation = (video: Video) => {
+    MySwal.fire({
+      title: '¿Estás seguro?',
+      text: `El video ${video.name} se eliminará`,
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor: 'red',
+      focusCancel: true,
+    }).then((onfullfilled: SweetAlertResult) => {
+      if (onfullfilled.isConfirmed) {
+        dispatch(thunkDeleteVideo(video.id));
+      }
+      return MySwal.close();
+    });
+  };
 
   return (
     <>
@@ -35,6 +57,7 @@ const Home = () => {
                 video={video}
                 setIsEditing={setIsEditing}
                 setEditingVideo={setEditingVideo}
+                showSwalDeleteConfirmation={showSwalDeleteConfirmation}
               />
             ))
           )}

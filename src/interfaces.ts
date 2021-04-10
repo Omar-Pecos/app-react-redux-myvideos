@@ -12,6 +12,7 @@ export interface VideoTileProps {
   video: Video;
   setIsEditing: Function;
   setEditingVideo: Function;
+  showSwalDeleteConfirmation: Function;
 }
 
 export interface NotificationProps {

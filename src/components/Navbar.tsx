@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../redux/hooks';
-import NotificationAlert from './NotificationAlert';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const NavBar = () => {
   const error = useAppSelector((state) => state.videos.error);
   const message = useAppSelector((state) => state.videos.message);
 
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
+  useEffect(() => {
+    if (message) {
+      notify(message, error === true ? 'error' : 'success');
+    }
+  }, [message, error]);
+
+  const notify = (msg: string, type: string) =>
+    type === 'error' ? toast.error(msg) : toast.success(msg);
 
   return (
     <>
@@ -57,8 +68,7 @@ const NavBar = () => {
           </div>
         </div>
       </nav>
-
-      {message && <NotificationAlert error={error} message={message} />}
+      <ToastContainer newestOnTop={true} />
     </>
   );
 };

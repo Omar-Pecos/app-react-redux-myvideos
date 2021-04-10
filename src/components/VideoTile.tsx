@@ -7,6 +7,7 @@ const VideoTile = ({
   video,
   setIsEditing,
   setEditingVideo,
+  showSwalDeleteConfirmation,
 }: VideoTileProps) => {
   const sendVideoToEdit = (video: Video) => {
     setEditingVideo(video);
@@ -37,7 +38,12 @@ const VideoTile = ({
             onClick={() => sendVideoToEdit({ ...video })}
           />
           {/* Delete icon - .image-fluid */}
-          <img src={deleteIcon} className="image-fluid" alt="Delete" />
+          <img
+            src={deleteIcon}
+            className="image-fluid"
+            alt="Delete"
+            onClick={() => showSwalDeleteConfirmation(video)}
+          />
         </div>
       </div>
     </div>

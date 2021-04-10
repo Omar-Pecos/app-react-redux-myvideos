@@ -4,13 +4,15 @@ import {
   ADD_VIDEO,
   ADD_VIDEO_FAIL,
   ADD_VIDEO_SUCCESS,
+  DELETE_VIDEO,
+  DELETE_VIDEO_FAIL,
+  DELETE_VIDEO_SUCCESS,
   EDIT_VIDEO,
   EDIT_VIDEO_FAIL,
   EDIT_VIDEO_SUCCESS,
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
-  RESET_MESSAGE_AND_ERROR,
 } from '../actions/actionTypes';
 
 interface VideosState {
@@ -47,12 +49,6 @@ export default function videosReducer(state = initialState, action: AnyAction) {
         status: 'error',
         error: true,
         message: action.payload,
-      };
-    case RESET_MESSAGE_AND_ERROR:
-      return {
-        ...state,
-        error: false,
-        message: '',
       };
     case ADD_VIDEO:
       return {
@@ -91,6 +87,27 @@ export default function videosReducer(state = initialState, action: AnyAction) {
         }),
       };
     case EDIT_VIDEO_FAIL:
+      return {
+        ...state,
+        status: 'error',
+        error: true,
+        message: action.payload,
+      };
+    case DELETE_VIDEO:
+      return {
+        ...state,
+        status: 'loading',
+      };
+    case DELETE_VIDEO_SUCCESS:
+      return {
+        ...state,
+        status: 'success',
+        message: 'Deleted video succesfully!',
+        list: state.list.filter(
+          (video: Video) => video.id !== action.payload.id
+        ),
+      };
+    case DELETE_VIDEO_FAIL:
       return {
         ...state,
         status: 'error',

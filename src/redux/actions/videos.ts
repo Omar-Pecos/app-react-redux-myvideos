@@ -5,13 +5,15 @@ import {
   ADD_VIDEO,
   ADD_VIDEO_FAIL,
   ADD_VIDEO_SUCCESS,
+  DELETE_VIDEO,
+  DELETE_VIDEO_FAIL,
+  DELETE_VIDEO_SUCCESS,
   EDIT_VIDEO,
   EDIT_VIDEO_FAIL,
   EDIT_VIDEO_SUCCESS,
   FETCH_VIDEOS,
   FETCH_VIDEOS_FAIL,
   FETCH_VIDEOS_SUCCESS,
-  RESET_MESSAGE_AND_ERROR,
 } from './actionTypes';
 import axios from 'axios';
 import { IFormInputs, Video } from '../../interfaces';
@@ -28,10 +30,6 @@ const fetchVideosSuccess = (payload: Video[]): PayloadAction<Video[]> => ({
 const fetchVideosFail = (payload: string): PayloadAction<string> => ({
   type: FETCH_VIDEOS_FAIL,
   payload,
-});
-
-const resetMessageAndError = () => ({
-  type: RESET_MESSAGE_AND_ERROR,
 });
 
 const addVideo = () => ({
@@ -62,6 +60,20 @@ const editVideoFail = (payload: string) => ({
   payload,
 });
 
+const deleteVideo = () => ({
+  type: DELETE_VIDEO,
+});
+
+const deleteVideoSuccess = (payload: Video) => ({
+  type: DELETE_VIDEO_SUCCESS,
+  payload,
+});
+
+const deleteVideoFail = (payload: string) => ({
+  type: DELETE_VIDEO_FAIL,
+  payload,
+});
+
 export const thunkFetchVideos = (): AppThunk => async (dispatch) => {
   dispatch(fetchVideos());
   try {
@@ -72,14 +84,6 @@ export const thunkFetchVideos = (): AppThunk => async (dispatch) => {
   } catch (err) {
     dispatch(fetchVideosFail(err?.response?.data?.error || err.message));
   }
-
-  dispatch(thunkResetMessageAndError());
-};
-
-const thunkResetMessageAndError = (): AppThunk => (dispatch) => {
-  setTimeout(() => {
-    dispatch(resetMessageAndError());
-  }, 3000);
 };
 
 export const thunkAddVideo = (body: IFormInputs): AppThunk => async (
@@ -95,8 +99,6 @@ export const thunkAddVideo = (body: IFormInputs): AppThunk => async (
   } catch (err) {
     dispatch(addVideoFail(err?.response?.data?.error || err.message));
   }
-
-  dispatch(thunkResetMessageAndError());
 };
 
 export const thunkEditVideo = (
@@ -113,6 +115,17 @@ export const thunkEditVideo = (
   } catch (err) {
     dispatch(editVideoFail(err?.response?.data?.error || err.message));
   }
+};
 
-  dispatch(thunkResetMessageAndError());
+export const thunkDeleteVideo = (id: string): AppThunk => async (dispatch) => {
+  dispatch(deleteVideo());
+
+  try {
+    const {
+      data: { data },
+    } = await axios.delete(`${apiUrl}/apm/${id}`);
+    dispatch(deleteVideoSuccess(data));
+  } catch (err) {
+    dispatch(deleteVideoFail(err?.response?.data?.error || err.message));
+  }
 };
