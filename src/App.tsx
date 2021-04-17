@@ -8,7 +8,7 @@ import Player from './pages/Player';
 
 const App = () => {
   return (
-    <Router>
+    <Router basename="/misvideos/react">
       <div className="App container p-0">
         <NavBar />
 
