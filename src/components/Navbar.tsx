@@ -59,7 +59,7 @@ const NavBar = () => {
                 <Link
                   className="nav-link"
                   aria-current="page"
-                  to="/player/vfxhcjyet85"
+                  to="/player/3hp5CX4iS7M"
                 >
                   Player
                 </Link>

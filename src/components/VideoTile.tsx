@@ -2,6 +2,8 @@ import { Video, VideoTileProps } from '../interfaces';
 import playIcon from '../assets/icons/play.png';
 import editIcon from '../assets/icons/edit.png';
 import deleteIcon from '../assets/icons/delete.png';
+import { Link } from 'react-router-dom';
+import { getYoutubeID, matchYoutubeLink } from '../utils/helpers';
 
 const VideoTile = ({
   video,
@@ -17,12 +19,20 @@ const VideoTile = ({
     <div id="video-tile" className="row">
       <div className="col-3 col-md-2 mt-2 mt-lg-4 mt-xl-5">
         {/* Play icon */}
-        <img
-          src={playIcon}
-          className="image-fluid"
-          alt="Play"
-          style={{ width: '100%' }}
-        />
+        <Link
+          to={
+            matchYoutubeLink(video.url)
+              ? `/player/${getYoutubeID(video.url)}`
+              : '#'
+          }
+        >
+          <img
+            src={playIcon}
+            className="image-fluid"
+            alt="Play"
+            style={{ width: '100%' }}
+          />
+        </Link>
       </div>
       <div className="col mt-2 mt-lg-4 mt-xl-5">
         <h4>{video.name}</h4>

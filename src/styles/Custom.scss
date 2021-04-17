@@ -108,3 +108,30 @@ $tertiary: #5d91ad;
     }
   }
 }
+
+//Player
+/*  play */
+
+.video-small-list {
+  padding: 10px 0;
+  max-height: 420px;
+  height: min-content;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .operations-bar {
+    height: 10vw;
+  }
+}
