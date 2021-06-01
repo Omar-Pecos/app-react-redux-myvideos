@@ -17,6 +17,11 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["react-app-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "react-app-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/Paginate.jsx"
+  ],
   "exclude": ["node_modules"]
 }
