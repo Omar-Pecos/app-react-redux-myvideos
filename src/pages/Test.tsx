@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Loading from '../components/Loading';
 import Paginate from '../components/Paginate';
 
 const datos = [
@@ -12,37 +13,42 @@ const datos = [
   { name: 'hola' + 8, number: 8 },
   { name: 'hola' + 9, number: 9 },
   { name: 'hola' + 10, number: 10 },
+  { name: 'hola' + 11, number: 11 },
 ];
 
 const Test: React.FC = () => {
-  const [allData, setAllData] = useState(datos);
+  const [allData] = useState(datos);
   const [displayData, setData] = useState([]);
   const [perPage, setPerPage] = useState(3);
-
-  /* useEffect(() => {
-    setTimeout(() => {
-      setAllData([...allData, ...datos]);
-    }, 10000);
-  }, []); */
 
   return (
     <div>
       <h1>Test Page</h1>
-      {displayData.map((dato: any) => (
-        <div
-          style={{ border: '2px solid plum', padding: '1em', margin: '1em' }}
-          key={dato.number}
-        >
-          <h2>{dato.name}</h2>
-          <h4>{dato.number}</h4>
+      {displayData.length === 0 ? (
+        <div style={{ padding: '5em' }}>
+          No hay resultados para paginar :/
+          <Loading />
         </div>
-      ))}
+      ) : (
+        displayData.map((dato: any) => (
+          <div
+            style={{ border: '2px solid plum', padding: '1em', margin: '1em' }}
+            key={dato.number}
+          >
+            <h2>{dato.name}</h2>
+            <h4>{dato.number}</h4>
+          </div>
+        ))
+      )}
       <Paginate
         data={allData}
         setData={setData}
         itemsPerPage={perPage}
         setPerPage={setPerPage}
         perPageOptions={[1, 3, 5, 10, 20]}
+        showNumberOfRowsIndicator={true}
+        /* showFirstLastButton={true}
+        showPageNumbers={true} */
       />
     </div>
   );
