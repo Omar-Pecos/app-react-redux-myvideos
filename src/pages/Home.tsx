@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { thunkDeleteVideo, thunkFetchVideos } from '../redux/actions/videos';
 import Loading from '../components/Loading';
 import { Video, videoDefaultObj } from '../interfaces';
@@ -7,10 +7,12 @@ import VideoTile from '../components/VideoTile';
 import VideoForm from '../components/VideoForm';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ItemContext from '../components/itemContext';
 
 const MySwal = withReactContent(Swal);
 
 const Home = () => {
+  const {item, name} = useContext(ItemContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editingVideo, setEditingVideo] = useState(videoDefaultObj);
   const videos: Video[] = useAppSelector((state) => state.videos.list);
@@ -23,7 +25,7 @@ const Home = () => {
       dispatch(thunkFetchVideos());
     }
     numOfLoads.current += 1;
-  }, [dispatch, videos.length]);
+  }, [dispatch, videos?.length]);
 
   const showSwalDeleteConfirmation = (video: Video) => {
     MySwal.fire({
@@ -45,13 +47,21 @@ const Home = () => {
 
   return (
     <>
+     {item && (
+        <div style={{padding: '50px', border: '2px solid purple'}}>
+        <pre>
+          {JSON.stringify(item)}
+          {name.toUpperCase()}
+        </pre>
+      </div>
+     )}
       <div className="row justify-content-center p-5">
         {/* Main content - list of videos */}
         <div className="col-md-8 order-2 order-md-1 overflow-auto content-principal">
           {status === 'loading' ? (
             <Loading />
           ) : (
-            videos.map((video: Video) => (
+            videos && videos.map((video: Video) => (
               <VideoTile
                 key={video.id}
                 video={video}
