@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import NavBar from './components/Navbar';
 import Home from './pages/Home';
 import Player from './pages/Player';
+import Test from './pages/Test';
 
 const App = () => {
   return (
@@ -18,6 +19,9 @@ const App = () => {
           </Route>
           <Route path="/player/:id">
             <Player />
+          </Route>
+          <Route path="/test">
+            <Test />
           </Route>
           <Route path="*">
             <Home />
